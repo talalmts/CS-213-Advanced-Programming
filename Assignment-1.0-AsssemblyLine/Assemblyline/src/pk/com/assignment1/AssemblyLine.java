@@ -9,17 +9,23 @@ public class AssemblyLine {
 	//the last station lane for which the car has the optimal time
 	public int exitlane;
 	//record the time from start to the station(j) in an array started from lane 1
-	int[] lane1fastest = new int[6];
+	int[] lane1fastest;
 	//record the time from start to the station(j) in an array started from lane 2
-	int[] lane2fastest = new int[6];
+	int[] lane2fastest;
 	//record the optimal station at the stage in the array of lane 1
-	int[] stationrecord1 = new int[6];
+	int[] stationrecord1;
 	//record the optimal station at the stage in the array of lane 2
-	int [] stationrecord2 = new int[6];
+	int [] stationrecord2;
 	Stack<Integer> path = new Stack<Integer>();
 
 
 	void FastestWay(Lane L1, Lane L2){
+		System.out.println("\n---Fastest Way Algorithm---");
+		lane1fastest = new int [L1.getStationtime().length];
+		lane2fastest = new int [L2.getStationtime().length];
+		stationrecord1 = new int [L1.getStationtime().length];
+		stationrecord2 = new int [L1.getStationtime().length];
+		
 		//add the entry time of respective lane to the time taken to process the first station in that
 		//lane.
 		if(!(L1.getStationtime().length == L2.getStationtime().length && L1.getTransition().length == L2.getTransition().length)){
@@ -72,22 +78,22 @@ public class AssemblyLine {
 
 		//determine the optimal time for completion by adding the exit time to the previous calculated time
 		//and decide which 
-		if(lane1fastest[5]+L1.getExit() < lane2fastest[5]+L2.getExit())
+		if(lane1fastest[L1.getStationtime().length-1]+L1.getExit() < lane2fastest[L2.getStationtime().length-1]+L2.getExit())
 		{ 	
 
-			optimaltime=lane1fastest[5]+L1.getExit();
+			optimaltime=lane1fastest[L1.getStationtime().length-1]+L1.getExit();
 			//determine which lane has the best optimal time after adding the exit time
 			exitlane=1;
 		}
 		else
 		{
-			optimaltime=lane2fastest[5]+L2.getExit();
+			optimaltime=lane2fastest[L1.getStationtime().length-1]+L2.getExit();
 			//determine which lane has the best optimal time after adding the exit time
 			exitlane=2;
 		}
 		System.out.println("Optimal Time is: "+optimaltime);
 		System.out.println("Optimal line is: "+exitlane);
-		
+		path();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -97,7 +103,7 @@ public class AssemblyLine {
 		int temp=exitlane;
 		path.push(exitlane);
 		//backtract the recordstation array to calculate the optimal path across the assembly line.
-		for(int j=5;j>=1;j--)
+		for(int j=lane1fastest.length-1;j>=1;j--)
 		{
 			//if station is from lane 1 than record that previous optimal solution from in the stack.
 			if (temp==1)
@@ -119,21 +125,22 @@ public class AssemblyLine {
 			System.out.print("Line "+st.pop()+ " -> ");
 		}
 		System.out.print("Exit");
-
-//		System.out.print("\nf1 : ");
-//		for(int i=0;i<6;i++)
-//			System.out.print(lane1fastest[i]+ " ");
-//		System.out.println();
-//		System.out.print("S : ");
-//		for(int i=0;i<6;i++)
-//			System.out.print(stationrecord1[i]+ " ");
-//		System.out.print("\nf2 : ");
-//		for(int i=0;i<6;i++)
-//			System.out.print(lane2fastest[i]+ " ");
-//		System.out.println();
-//		System.out.print("S : ");
-//		for(int i=0;i<6;i++)
-//			System.out.print(stationrecord2[i]+ " ");
+		System.out.println();
+		System.out.print("\nLane 1 : ");
+		for(int i=0;i<lane1fastest.length;i++)
+			System.out.print(lane1fastest[i]+ " ");
+		System.out.println();
+		System.out.print("Station : ");
+		for(int i=0;i<stationrecord1.length;i++)
+			System.out.print(stationrecord1[i]+ " ");
+		System.out.print("\nLane 2 : ");
+		for(int i=0;i<lane2fastest.length;i++)
+			System.out.print(lane2fastest[i]+ " ");
+		System.out.println();
+		System.out.print("Station : ");
+		for(int i=0;i<stationrecord2.length;i++)
+			System.out.print(stationrecord2[i]+ " ");
+		System.out.println("\n---End of Fastest Way Algorithm---");
 
 	}
 

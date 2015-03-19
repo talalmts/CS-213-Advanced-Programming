@@ -61,14 +61,15 @@ public class Lane {
 		System.out.println("\n\nAssembly lane  "+lanenum);
 		System.out.println("Total number of station : " + stationtime.length);
 		System.out.println("Time to enter the lane : "+ getEntrytime());
-		System.out.println("Time to enter the lane : "+ getExit());
-		System.out.print("per Station process Time :");
+		System.out.println("Time to exit the lane : "+ getExit());
+		System.out.print("per Station process Time : {");
 		for(int i=0;i<stationtime.length;i++)
 			System.out.print(" "+getStime(i));
-		System.out.print("\nTransition time : ");
+		System.out.print(" } ");
+		System.out.print("\nTransition time : {");
 		for(int i=0;i<transitiontime.length;i++)
 			System.out.print(" "+getTtime(i));
-		System.out.println();
+		System.out.print(" } ");
 	}
 
 
